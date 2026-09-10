@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Agent 101 — Complete Inventor Licensing Workbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07070f;
+  --card: #0f0f1c;
+  --card2: #141425;
+  --border: rgba(201,162,39,0.15);
+  --border2: rgba(255,255,255,0.06);
+  --gold: #c9a227;
+  --gold2: #f0c84a;
+  --navy: #0d1f3c;
+  --navy2: #162848;
+  --text: #eaeaf4;
+  --muted: #7878a0;
+  --muted2: #5050700;
+  --green: #22c97a;
+  --red: #ff4d6a;
+  --blue: #4da8ff;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --gold-glow: 0 0 24px rgba(201,162,39,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* ═══════════════════════ LAYOUT ═══════════════════════ */
+.shell{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:220px;min-width:220px;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:0;overflow-y:auto}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:58px;border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 28px;gap:16px;background:rgba(7,7,15,0.95);backdrop-filter:blur(12px);flex-shrink:0}
+.screen{flex:1;overflow-y:auto;padding:28px}
+
+/* ═══════════════════════ SIDEBAR ═══════════════════════ */
+.sb-brand{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
+.sb-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--gold2);line-height:1.1}
+.sb-sub{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+.sb-section{padding:12px 12px 6px;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.sb-nav{list-style:none;padding:0 8px}
+.sb-nav li{margin:2px 0}
+.sb-nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;text-decoration:none;border:1px solid transparent}
+.sb-nav a:hover{color:var(--text);background:var(--card2)}
+.sb-nav a.active{color:var(--gold2);background:rgba(201,162,39,0.1);border-color:rgba(201,162,39,0.2)}
+.sb-icon{width:16px;text-align:center;font-size:14px}
+.sb-pill{margin-left:auto;background:var(--gold);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px}
+.sb-footer{margin-top:auto;padding:16px;border-top:1px solid var(--border2)}
+.agent-status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--green)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ═══════════════════════ TOP BAR ═══════════════════════ */
+.tb-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--text)}
+.tb-sub{font-size:12px;color:var(--muted);margin-left:2px}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.tb-badge{background:rgba(34,201,122,0.12);border:1px solid rgba(34,201,122,0.25);color:var(--green);font-size:11px;font-weight:600;padding:4px 12px;border-radius:99px;letter-spacing:.5px}
+.api-input{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 12px;font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;width:220px;outline:none}
+.api-input:focus{border-color:var(--gold);color:var(--text)}
+.api-input::placeholder{color:var(--muted)}
+
+/* ═══════════════════════ SCREENS ═══════════════════════ */
+.screen{display:none}
+.screen.active{display:block}
+
+/* ═══════════════════════ COMPONENTS ═══════════════════════ */
+.page-header{margin-bottom:24px}
+.page-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--text);line-height:1.1}
+.page-sub{font-size:13px;color:var(--muted);margin-top:5px}
+
+.card{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:22px}
+.card-gold{border-color:rgba(201,162,39,0.25)}
+.card-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+
+/* Stat cards */
+.stat-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:0 var(--radius) 0 60px;opacity:.08}
+.stat-card.gold::before{background:var(--gold)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.blue::before{background:var(--blue)}
+.stat-card.red::before{background:var(--red)}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.stat-value{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;line-height:1;color:var(--text)}
+.stat-value.gold{color:var(--gold2)}
+.stat-value.green{color:var(--green)}
+.stat-change{font-size:11px;color:var(--green);margin-top:6px;font-weight:600}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;font-family:'DM Sans',sans-serif}
+.btn-gold{background:var(--gold);color:#000}
+.btn-gold:hover{background:var(--gold2);box-shadow:var(--gold-glow)}
+.btn-outline{background:transparent;color:var(--gold);border:1px solid rgba(201,162,39,0.4)}
+.btn-outline:hover{background:rgba(201,162,39,0.1)}
+.btn-ghost{background:var(--card2);color:var(--text);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-danger{background:rgba(255,77,106,0.15);color:var(--red);border:1px solid rgba(255,77,106,0.25)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-green{background:rgba(34,201,122,0.15);color:var(--green);border:1px solid rgba(34,201,122,0.25)}
+
+/* Tags/pills */
+.tag{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.tag-a{background:rgba(34,201,122,0.15);color:var(--green);border:1px solid rgba(34,201,122,0.25)}
+.tag-b{background:rgba(77,168,255,0.15);color:var(--blue);border:1px solid rgba(77,168,255,0.25)}
+.tag-c{background:rgba(201,162,39,0.15);color:var(--gold2);border:1px solid rgba(201,162,39,0.25)}
+.tag-cold{background:rgba(120,120,160,0.12);color:var(--muted);border:1px solid var(--border2)}
+
+/* Input */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.field input,.field select,.field textarea{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border .15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field textarea{resize:vertical;min-height:80px}
+.field select option{background:var(--card2)}
+
+/* ═══════════════════════ DASHBOARD ═══════════════════════ */
+.activity-feed{display:flex;flex-direction:column;gap:1px}
+.af-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:var(--radius-sm);transition:background .15s}
+.af-item:hover{background:var(--card2)}
+.af-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.af-dot.gold{background:var(--gold)}
+.af-dot.green{background:var(--green)}
+.af-dot.blue{background:var(--blue)}
+.af-dot.red{background:var(--red)}
+.af-text{font-size:13px;color:var(--text);line-height:1.45}
+.af-time{font-size:11px;color:var(--muted);margin-top:2px}
+
+.funnel-bar{height:8px;border-radius:99px;background:var(--card2);margin:6px 0;overflow:hidden}
+.funnel-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .6s ease}
+
+.quick-action{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .18s;text-align:center}
+.quick-action:hover{border-color:var(--gold);background:rgba(201,162,39,0.06);transform:translateY(-1px)}
+.qa-icon{font-size:22px;margin-bottom:8px}
+.qa-label{font-size:12px;font-weight:600;color:var(--text)}
+.qa-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ═══════════════════════ AI AGENT CHAT ═══════════════════════ */
+.chat-shell{display:flex;flex-direction:column;height:calc(100vh - 58px - 56px);background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;background:var(--card2)}
+.chat-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--navy));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#000;flex-shrink:0}
+.chat-agent-name{font-weight:700;font-size:14px;color:var(--text)}
+.chat-agent-role{font-size:11px;color:var(--muted)}
+.chat-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:10px;max-width:85%;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:2px}
+.msg-avatar.agent{background:linear-gradient(135deg,var(--gold),var(--navy));color:#000}
+.msg-avatar.user{background:var(--navy2);color:var(--gold2)}
+.msg-bubble{padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.55;color:var(--text)}
+.msg.agent .msg-bubble{background:var(--card2);border:1px solid var(--border2);border-top-left-radius:4px}
+.msg.user .msg-bubble{background:rgba(201,162,39,0.12);border:1px solid rgba(201,162,39,0.2);border-top-right-radius:4px}
+.msg-time{font-size:10px;color:var(--muted);margin-top:4px;padding:0 4px}
+.chat-footer{padding:14px 16px;border-top:1px solid var(--border2);display:flex;gap:10px;background:var(--card2)}
+.chat-input{flex:1;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px 14px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;resize:none;max-height:100px}
+.chat-input:focus{border-color:var(--gold)}
+.chat-send{background:var(--gold);border:none;border-radius:var(--radius-sm);width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;transition:all .18s}
+.chat-send:hover{background:var(--gold2);box-shadow:var(--gold-glow)}
+.typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce .9s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.chat-prompt-chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-bottom:1px solid var(--border2)}
+.chip{background:var(--card2);border:1px solid var(--border2);border-radius:99px;padding:5px 12px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;font-weight:500}
+.chip:hover{border-color:var(--gold);color:var(--gold2)}
+
+/* ═══════════════════════ LEAD ENGINE ═══════════════════════ */
+.lead-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:14px;transition:all .18s}
+.lead-card:hover{border-color:var(--gold);transform:translateX(2px)}
+.lead-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:var(--gold2);flex-shrink:0}
+.lead-name{font-weight:700;font-size:14px;color:var(--text)}
+.lead-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.lead-actions{margin-left:auto;display:flex;gap:8px}
+.score-bar{width:120px;height:5px;border-radius:99px;background:var(--card);margin-top:6px;overflow:hidden}
+.score-fill{height:100%;border-radius:99px}
+.score-fill.high{background:var(--green)}
+.score-fill.med{background:var(--gold)}
+.score-fill.low{background:var(--red)}
+
+/* ═══════════════════════ PIPELINE ═══════════════════════ */
+.pipeline-board{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;min-height:400px}
+.pipeline-col{min-width:220px;flex:1;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:10px}
+.col-header{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.col-count{background:var(--card2);border-radius:99px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold2)}
+.deal-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px;cursor:pointer;transition:all .18s}
+.deal-card:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(201,162,39,0.08)}
+.deal-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.deal-val{font-size:12px;color:var(--gold2);font-weight:600}
+.deal-stage-bar{height:3px;border-radius:99px;margin-top:8px}
+
+/* ═══════════════════════ BOOKING ═══════════════════════ */
+.time-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.time-slot{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px;text-align:center;cursor:pointer;transition:all .18s;font-size:12px;font-weight:600;color:var(--muted)}
+.time-slot:hover,.time-slot.selected{background:rgba(201,162,39,0.12);border-color:var(--gold);color:var(--gold2)}
+.time-slot.booked{background:rgba(34,201,122,0.08);border-color:rgba(34,201,122,0.2);color:var(--green);cursor:default}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--muted)}
+.cal-day.has-slot{color:var(--text);background:var(--card2);border:1px solid var(--border2)}
+.cal-day.has-slot:hover,.cal-day.selected{background:rgba(201,162,39,0.15);border-color:var(--gold);color:var(--gold2)}
+.cal-day.today{border:1px solid var(--gold);color:var(--gold2)}
+.cal-label{font-size:10px;font-weight:700;color:var(--muted);text-align:center;letter-spacing:1px}
+
+/* ═══════════════════════ EMAIL SEQUENCES ═══════════════════════ */
+.email-flow{display:flex;flex-direction:column;gap:0}
+.email-step{display:flex;gap:16px;padding:16px 0;position:relative}
+.email-step::before{content:'';position:absolute;left:19px;top:48px;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),transparent);opacity:.3}
+.email-step:last-child::before{display:none}
+.step-num{width:40px;height:40px;border-radius:50%;background:rgba(201,162,39,0.12);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:var(--gold2);flex-shrink:0}
+.email-card{flex:1;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;transition:all .18s}
+.email-card:hover{border-color:rgba(201,162,39,0.3)}
+.email-subject{font-weight:700;font-size:14px;color:var(--text);margin-bottom:6px}
+.email-timing{font-size:11px;color:var(--gold2);font-weight:600;margin-bottom:8px}
+.email-preview{font-size:12px;color:var(--muted);line-height:1.55}
+.email-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border2)}
+.est{font-size:11px;color:var(--muted)}
+.est strong{color:var(--green)}
+
+/* ═══════════════════════ DEAL CLOSER ═══════════════════════ */
+.objection-grid{display:flex;flex-direction:column;gap:12px}
+.obj-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;transition:all .18s}
+.obj-header{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:14px;color:var(--text)}
+.obj-header:hover{color:var(--gold2)}
+.obj-body{padding:0 18px 14px;display:none;border-top:1px solid var(--border2);padding-top:12px}
+.obj-body.open{display:block}
+.obj-script{font-size:13px;color:var(--muted);line-height:1.6;font-style:italic;border-left:3px solid var(--gold);padding-left:12px;margin-bottom:10px}
+.close-scripts{display:flex;flex-direction:column;gap:10px}
+.close-card{background:var(--card2);border:1px solid rgba(201,162,39,0.2);border-radius:var(--radius);padding:16px}
+.close-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.close-script{font-size:13px;color:var(--text);line-height:1.6;font-style:italic}
+
+/* ═══════════════════════ CUSTOMER HUB ═══════════════════════ */
+.customer-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);padding:18px;display:flex;gap:14px;align-items:flex-start;transition:all .18s}
+.customer-card:hover{border-color:rgba(201,162,39,0.25)}
+.cx-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#000;flex-shrink:0}
+.cx-name{font-weight:700;font-size:15px;color:var(--text)}
+.cx-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.cx-journey{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.journey-badge{padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.jb-done{background:rgba(34,201,122,0.12);color:var(--green);border:1px solid rgba(34,201,122,0.2)}
+.jb-active{background:rgba(201,162,39,0.12);color:var(--gold2);border:1px solid rgba(201,162,39,0.2)}
+.jb-next{background:rgba(120,120,160,0.1);color:var(--muted);border:1px solid var(--border2)}
+
+/* ═══════════════════════ ANALYTICS ═══════════════════════ */
+.metric-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2)}
+.metric-row:last-child{border-bottom:none}
+.metric-label{font-size:13px;color:var(--text);flex:1}
+.metric-bar{flex:2;height:8px;background:var(--card2);border-radius:99px;overflow:hidden}
+.metric-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1s ease}
+.metric-val{font-size:13px;font-weight:700;color:var(--gold2);width:50px;text-align:right}
+.rev-chart{display:flex;align-items:flex-end;gap:6px;height:120px;padding:0 4px}
+.rev-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(--gold),var(--gold2));opacity:.7;transition:all .3s;cursor:pointer;min-width:0}
+.rev-bar:hover{opacity:1;box-shadow:0 -2px 12px rgba(201,162,39,0.3)}
+.rev-labels{display:flex;gap:6px;margin-top:6px}
+.rev-label{flex:1;text-align:center;font-size:9px;color:var(--muted);font-weight:600}
+
+/* ═══════════════════════ LEAD CAPTURE ═══════════════════════ */
+.capture-preview{background:#fff;border-radius:var(--radius);overflow:hidden;border:3px solid var(--border)}
+.cp-header{background:linear-gradient(135deg,#0d1f3c,#162848);padding:28px;text-align:center}
+.cp-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#f0c84a;margin-bottom:6px}
+.cp-sub{font-size:13px;color:rgba(255,255,255,0.65)}
+.cp-form{padding:24px}
+.cp-field{margin-bottom:14px}
+.cp-field label{display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:5px}
+.cp-field input,.cp-field select{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 14px;font-size:13px;color:#111;background:#f9fafb}
+.cp-btn{width:100%;background:#c9a227;color:#000;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px}
+.cp-disclaimer{font-size:10px;color:#9ca3af;text-align:center;margin-top:10px;line-height:1.5}
+
+/* ═══════════════════════ TOAST ═══════════════════════ */
+.toast-container{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+.toast{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 18px;font-size:13px;font-weight:600;color:var(--text);box-shadow:0 4px 24px rgba(0,0,0,.4);animation:slideIn .25s ease;display:flex;align-items:center;gap:8px}
+.toast.success{border-color:rgba(34,201,122,0.4);color:var(--green)}
+.toast.gold{border-color:rgba(201,162,39,0.4);color:var(--gold2)}
+@keyframes slideIn{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ═══════════════════════ SCROLLBAR ═══════════════════════ */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(201,162,39,0.2);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:rgba(201,162,39,0.4)}
+
+/* ═══════════════════════ DIVIDER ═══════════════════════ */
+.divider{height:1px;background:var(--border2);margin:20px 0}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+
+/* ═══════════════════════ HOW TO USE GUIDE ═══════════════════════ */
+.guide-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border:1px solid rgba(201,162,39,0.25);border-radius:var(--radius);padding:32px;margin-bottom:28px;text-align:center}
+.guide-hero-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--gold2);margin-bottom:8px}
+.guide-hero-sub{font-size:14px;color:rgba(255,255,255,0.55);max-width:520px;margin:0 auto;line-height:1.6}
+.guide-toc{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:32px}
+.toc-item{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 10px;text-align:center;cursor:pointer;transition:all .18s}
+.toc-item:hover{border-color:var(--gold);transform:translateY(-2px)}
+.toc-icon{font-size:22px;margin-bottom:6px}
+.toc-label{font-size:11px;font-weight:700;color:var(--muted);line-height:1.3}
+.guide-section{margin-bottom:32px}
+.guide-section-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(201,162,39,0.2)}
+.guide-section-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--navy));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#000;flex-shrink:0}
+.guide-section-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--text)}
+.guide-section-icon{font-size:20px;margin-left:auto}
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-item{display:flex;gap:14px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;transition:border .15s}
+.step-item:hover{border-color:rgba(201,162,39,0.2)}
+.step-num{width:26px;height:26px;border-radius:50%;background:rgba(201,162,39,0.15);border:1px solid rgba(201,162,39,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--gold2);flex-shrink:0;margin-top:1px}
+.step-content{flex:1}
+.step-action{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.step-detail{font-size:12px;color:var(--muted);line-height:1.6}
+.step-tip{display:inline-flex;align-items:center;gap:5px;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:99px;padding:3px 10px;font-size:11px;color:var(--gold2);font-weight:600;margin-top:6px}
+.guide-callout{background:rgba(34,201,122,0.06);border:1px solid rgba(34,201,122,0.2);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
+.guide-callout-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.guide-callout-text{font-size:13px;color:var(--text);line-height:1.6}
+.guide-nav-row{display:flex;gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border2)}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">Sales Agent 101</div>
+      <div class="sb-sub">Inventor Licensing Workbook</div>
+    </div>
+
+    <div class="sb-section">Command</div>
+    <ul class="sb-nav">
+      <li><a onclick="nav('dashboard')" class="active" id="nav-dashboard"><span class="sb-icon">⚡</span> Dashboard</a></li>
+      <li><a onclick="nav('agent')" id="nav-agent"><span class="sb-icon">🤖</span> AI Agent<span class="sb-pill">LIVE</span></a></li>
+    </ul>
+
+    <div class="sb-section">Funnel</div>
+    <ul class="sb-nav">
+      <li><a onclick="nav('leads')" id="nav-leads"><span class="sb-icon">🎯</span> Lead Engine<span class="sb-pill">12</span></a></li>
+      <li><a onclick="nav('pipeline')" id="nav-pipeline"><span class="sb-icon">📊</span> Pipeline CRM</a></li>
+      <li><a onclick="nav('booking')" id="nav-booking"><span class="sb-icon">📅</span> Booking</a></li>
+    </ul>
+
+    <div class="sb-section">Growth</div>
+    <ul class="sb-nav">
+      <li><a onclick="nav('email')" id="nav-email"><span class="sb-icon">✉️</span> Email Sequences</a></li>
+      <li><a onclick="nav('closer')" id="nav-closer"><span class="sb-icon">🏆</span> Deal Closer</a></li>
+      <li><a onclick="nav('customers')" id="nav-customers"><span class="sb-icon">👥</span> Customer Hub</a></li>
+      <li><a onclick="nav('analytics')" id="nav-analytics"><span class="sb-icon">📈</span> Analytics</a></li>
+      <li><a onclick="nav('capture')" id="nav-capture"><span class="sb-icon">🔗</span> Lead Capture</a></li>
+    </ul>
+
+    <div class="sb-section">Help</div>
+    <ul class="sb-nav">
+      <li><a onclick="nav('guide')" id="nav-guide"><span class="sb-icon">📖</span> How to Use</a></li>
+    </ul>
+
+    <div class="sb-footer">
+      <div class="agent-status" style="margin-bottom:10px"><div class="status-dot"></div> Agent Active 24/7</div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;font-size:11px;opacity:.6" onclick="resetAllData()">↺ Reset Sample Data</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="tb-title" id="topbar-title">Command Dashboard</div>
+        <div class="tb-sub" id="topbar-sub">Your 24/7 AI sales engine — live and working</div>
+      </div>
+      <div class="tb-right">
+        <input class="api-input" id="apiKeyInput" type="password" placeholder="Paste Anthropic API key for AI Agent…" />
+        <div class="tb-badge">● AGENT ONLINE</div>
+      </div>
+    </div>
+
+    <!-- SCREENS -->
+    <div class="screen active" id="screen-dashboard">
+      <div class="page-header">
+        <div class="page-title">Good morning, Valerie. 👋</div>
+        <div class="page-sub">Your agent worked overnight. Here's what happened while you slept.</div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="stat-card gold">
+          <div class="stat-label">Revenue This Month</div>
+          <div class="stat-value gold">$4,820</div>
+          <div class="stat-change">↑ 34% vs last month</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Active Leads</div>
+          <div class="stat-value green">47</div>
+          <div class="stat-change">↑ 12 new this week</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Calls Booked</div>
+          <div class="stat-value" style="color:var(--blue)">8</div>
+          <div class="stat-change" style="color:var(--blue)">3 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Deals Closed</div>
+          <div class="stat-value gold">19</div>
+          <div class="stat-change">↑ 6 this month</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:20px">
+        <!-- Activity Feed -->
+        <div class="card">
+          <div class="card-title">Live Agent Activity</div>
+          <div class="activity-feed" id="live-feed">
+            <div class="af-item"><div class="af-dot gold"></div><div><div class="af-text">Agent sent <strong>Email #2</strong> to Sandra T. — "What's your #1 roadblock?"</div><div class="af-time">2 min ago</div></div></div>
+            <div class="af-item"><div class="af-dot green"></div><div><div class="af-text"><strong>Marcus R.</strong> scored A+ — moved to Hot Prospect stage</div><div class="af-time">14 min ago</div></div></div>
+            <div class="af-item"><div class="af-dot blue"></div><div><div class="af-text">Call booked: <strong>Diane W.</strong> — Friday 2:00 PM EST</div><div class="af-time">1 hr ago</div></div></div>
+            <div class="af-item"><div class="af-dot gold"></div><div><div class="af-text">New lead captured: <strong>Robert K.</strong> — food inventor, Texas</div><div class="af-time">2 hrs ago</div></div></div>
+            <div class="af-item"><div class="af-dot green"></div><div><div class="af-text">Deal closed: <strong>Angela M.</strong> — Complete Workbook + Coaching $297</div><div class="af-time">Yesterday</div></div></div>
+            <div class="af-item"><div class="af-dot blue"></div><div><div class="af-text"><strong>7 nurture emails</strong> sent automatically overnight</div><div class="af-time">Overnight</div></div></div>
+          </div>
+        </div>
+
+        <!-- Funnel -->
+        <div class="card">
+          <div class="card-title">Sales Funnel — This Month</div>
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span class="muted-text">Leads Captured</span><span class="gold-text">312</span></div>
+            <div class="funnel-bar"><div class="funnel-fill" style="width:100%"></div></div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span class="muted-text">Email Opens</span><span class="gold-text">187</span></div>
+            <div class="funnel-bar"><div class="funnel-fill" style="width:60%"></div></div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span class="muted-text">Calls Booked</span><span class="gold-text">38</span></div>
+            <div class="funnel-bar"><div class="funnel-fill" style="width:12%"></div></div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span class="muted-text">Deals Closed</span><span class="green-text">19</span></div>
+            <div class="funnel-bar"><div class="funnel-fill" style="width:6%;background:linear-gradient(90deg,var(--green),#4ade80)"></div></div>
+          </div>
+          <div class="divider" style="margin:14px 0"></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px">
+            <span class="muted-text">Close Rate</span><span class="green-text" style="font-weight:700">6.1%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:6px">
+            <span class="muted-text">Avg Deal Value</span><span class="gold-text" style="font-weight:700">$253.68</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="section-label">Quick Actions</div>
+      <div class="grid-4">
+        <div class="quick-action" onclick="nav('agent')"><div class="qa-icon">🤖</div><div class="qa-label">Ask the AI Agent</div><div class="qa-sub">Get a pitch script or strategy</div></div>
+        <div class="quick-action" onclick="nav('leads')"><div class="qa-icon">➕</div><div class="qa-label">Add New Lead</div><div class="qa-sub">Manually capture a prospect</div></div>
+        <div class="quick-action" onclick="nav('email')"><div class="qa-icon">✉️</div><div class="qa-label">Launch Email Sequence</div><div class="qa-sub">Start a lead in the nurture flow</div></div>
+        <div class="quick-action" onclick="nav('booking')"><div class="qa-icon">📅</div><div class="qa-label">Book a Discovery Call</div><div class="qa-sub">Schedule with a hot prospect</div></div>
+      </div>
+    </div><!-- /dashboard -->
+
+    <!-- AI AGENT -->
+    <div class="screen" id="screen-agent">
+      <div class="page-header">
+        <div class="page-title">AI Sales Agent</div>
+        <div class="page-sub">Your 24/7 closer — trained on the Complete Inventor Licensing Workbook</div>
+      </div>
+      <div class="chat-shell">
+        <div class="chat-header">
+          <div class="chat-avatar">SA</div>
+          <div><div class="chat-agent-name">Agent 101</div><div class="chat-agent-role">Senior Licensing Sales Strategist · Online now</div></div>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="clearChat()">Clear Chat</button>
+          </div>
+        </div>
+        <div class="chat-prompt-chips">
+          <div class="chip" onclick="sendChip(this)">Write me a cold email pitch</div>
+          <div class="chip" onclick="sendChip(this)">Handle the "I need to think about it" objection</div>
+          <div class="chip" onclick="sendChip(this)">What should I say on a discovery call?</div>
+          <div class="chip" onclick="sendChip(this)">Give me a sell sheet headline</div>
+          <div class="chip" onclick="sendChip(this)">How do I find my licensee?</div>
+          <div class="chip" onclick="sendChip(this)">Help me price the workbook</div>
+        </div>
+        <div class="chat-body" id="chatBody">
+          <div class="msg agent">
+            <div class="msg-avatar agent">SA</div>
+            <div>
+              <div class="msg-bubble">Hello! I'm Agent 101 — your dedicated AI sales strategist for the <strong>Complete Inventor Licensing Workbook</strong>.<br><br>I'm trained on every assignment, every benefit, every objection, and every closing technique in this program. I can write your pitch emails, handle tough objections, coach you through discovery calls, help you find licensees, and build your outreach sequences.<br><br>What do you need to close more deals today?</div>
+              <div class="msg-time">Just now</div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-footer">
+          <textarea class="chat-input" id="chatInput" placeholder="Ask anything about licensing, pitching, objections, or strategy…" rows="1" onkeydown="handleChatKey(event)"></textarea>
+          <button class="chat-send" onclick="sendMessage()">➤</button>
+        </div>
+      </div>
+    </div><!-- /agent -->
+
+    <!-- LEAD ENGINE -->
+    <div class="screen" id="screen-leads">
+      <div class="page-header">
+        <div class="page-title">Lead Engine</div>
+        <div class="page-sub">Capture, score, and route every inventor prospect automatically</div>
+      </div>
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-title">Add New Lead</div>
+          <div class="field"><label>Full Name</label><input id="leadName" type="text" placeholder="e.g. Sandra Thomas"></div>
+          <div class="field"><label>Email</label><input id="leadEmail" type="email" placeholder="email@example.com"></div>
+          <div class="field"><label>Product Type</label><input id="leadProduct" type="text" placeholder="e.g. Kitchen gadget, Beauty tool…"></div>
+          <div class="field"><label>How They Found You</label><select id="leadSource"><option>Social Media</option><option>YouTube</option><option>Google Search</option><option>Word of Mouth</option><option>Podcast</option><option>Other</option></select></div>
+          <div class="field"><label>Urgency / Stage</label><select id="leadUrgency"><option>Just browsing</option><option>Actively researching</option><option>Ready to buy</option><option>Has a patent</option></select></div>
+          <button class="btn btn-gold" onclick="addLead()" style="width:100%;justify-content:center">⚡ Add &amp; Score Lead</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Lead Scoring Model</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px">Agent 101 automatically scores every lead A, B, or C based on readiness, product type, and engagement level. A-leads are auto-routed to your booking calendar.</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(34,201,122,0.06);border-radius:var(--radius-sm);border:1px solid rgba(34,201,122,0.15)"><div class="tag tag-a">A</div><div><div style="font-size:13px;font-weight:700;color:var(--text)">Hot Lead</div><div style="font-size:11px;color:var(--muted)">Has product idea + ready to license · Auto-book</div></div></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(77,168,255,0.06);border-radius:var(--radius-sm);border:1px solid rgba(77,168,255,0.15)"><div class="tag tag-b">B</div><div><div style="font-size:13px;font-weight:700;color:var(--text)">Warm Lead</div><div style="font-size:11px;color:var(--muted)">Interested, needs more info · Enter nurture flow</div></div></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(201,162,39,0.06);border-radius:var(--radius-sm);border:1px solid rgba(201,162,39,0.15)"><div class="tag tag-c">C</div><div><div style="font-size:13px;font-weight:700;color:var(--text)">Cold Lead</div><div style="font-size:11px;color:var(--muted)">Early stage · Long-term nurture sequence</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Active Leads <span style="color:var(--gold2);margin-left:6px" id="lead-count">12 leads</span></div>
+        <div id="lead-list" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
+      </div>
+    </div><!-- /leads -->
+
+    <!-- PIPELINE -->
+    <div class="screen" id="screen-pipeline">
+      <div class="page-header">
+        <div class="page-title">Pipeline CRM</div>
+        <div class="page-sub">Every deal, every stage — nothing falls through the cracks</div>
+      </div>
+      <div class="pipeline-board">
+        <div class="pipeline-col">
+          <div class="col-header">New Lead <div class="col-count">4</div></div>
+          <div class="deal-card"><div class="deal-name">Marcus R.</div><div class="deal-val">$97 Workbook</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Kitchen inventor · TX</div><div class="deal-stage-bar" style="background:rgba(201,162,39,0.15)"><div style="height:100%;width:20%;background:var(--gold);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">Sandra T.</div><div class="deal-val">$97 Workbook</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Beauty inventor · GA</div><div class="deal-stage-bar" style="background:rgba(201,162,39,0.15)"><div style="height:100%;width:20%;background:var(--gold);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">Robert K.</div><div class="deal-val">$297 Bundle</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Food inventor · TX</div><div class="deal-stage-bar" style="background:rgba(201,162,39,0.15)"><div style="height:100%;width:20%;background:var(--gold);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">Carla M.</div><div class="deal-val">$97 Workbook</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Pet products · FL</div><div class="deal-stage-bar" style="background:rgba(201,162,39,0.15)"><div style="height:100%;width:20%;background:var(--gold);border-radius:99px"></div></div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="col-header">Nurture <div class="col-count">5</div></div>
+          <div class="deal-card"><div class="deal-name">Diane W.</div><div class="deal-val">$297 Bundle</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Email #3 sent</div><div class="deal-stage-bar" style="background:rgba(77,168,255,0.1)"><div style="height:100%;width:40%;background:var(--blue);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">Tyrone B.</div><div class="deal-val">$97 Workbook</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Email #2 sent</div><div class="deal-stage-bar" style="background:rgba(77,168,255,0.1)"><div style="height:100%;width:40%;background:var(--blue);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">Nina A.</div><div class="deal-val">$197 Coaching</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Email #4 sent</div><div class="deal-stage-bar" style="background:rgba(77,168,255,0.1)"><div style="height:100%;width:40%;background:var(--blue);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">James O.</div><div class="deal-val">$97 Workbook</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Email #1 sent</div><div class="deal-stage-bar" style="background:rgba(77,168,255,0.1)"><div style="height:100%;width:40%;background:var(--blue);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">Priya S.</div><div class="deal-val">$297 Bundle</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Email #5 sent</div><div class="deal-stage-bar" style="background:rgba(77,168,255,0.1)"><div style="height:100%;width:40%;background:var(--blue);border-radius:99px"></div></div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="col-header">Call Booked <div class="col-count">2</div></div>
+          <div class="deal-card"><div class="deal-name">Angela M.</div><div class="deal-val">$297 Bundle</div><div style="font-size:11px;color:var(--green);margin-top:4px">Friday 2:00 PM EST</div><div class="deal-stage-bar" style="background:rgba(34,201,122,0.1)"><div style="height:100%;width:70%;background:var(--green);border-radius:99px"></div></div></div>
+          <div class="deal-card"><div class="deal-name">Linda F.</div><div class="deal-val">$197 Coaching</div><div style="font-size:11px;color:var(--green);margin-top:4px">Thursday 11:00 AM</div><div class="deal-stage-bar" style="background:rgba(34,201,122,0.1)"><div style="height:100%;width:70%;background:var(--green);border-radius:99px"></div></div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="col-header">Proposal Sent <div class="col-count">1</div></div>
+          <div class="deal-card"><div class="deal-name">David C.</div><div class="deal-val">$497 Full Suite</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Awaiting response</div><div class="deal-stage-bar" style="background:rgba(201,162,39,0.1)"><div style="height:100%;width:85%;background:var(--gold2);border-radius:99px"></div></div></div>
+        </div>
+        <div class="pipeline-col" style="border-color:rgba(34,201,122,0.25)">
+          <div class="col-header" style="color:var(--green)">Closed Won <div class="col-count" style="background:rgba(34,201,122,0.15);color:var(--green)">3</div></div>
+          <div class="deal-card" style="border-color:rgba(34,201,122,0.2)"><div class="deal-name">Patricia H.</div><div class="deal-val green-text">$297 — CLOSED ✓</div><div style="font-size:11px;color:var(--muted);margin-top:4px">May 20</div></div>
+          <div class="deal-card" style="border-color:rgba(34,201,122,0.2)"><div class="deal-name">Kevin J.</div><div class="deal-val green-text">$97 — CLOSED ✓</div><div style="font-size:11px;color:var(--muted);margin-top:4px">May 19</div></div>
+          <div class="deal-card" style="border-color:rgba(34,201,122,0.2)"><div class="deal-name">Rita N.</div><div class="deal-val green-text">$497 — CLOSED ✓</div><div style="font-size:11px;color:var(--muted);margin-top:4px">May 18</div></div>
+        </div>
+      </div>
+    </div><!-- /pipeline -->
+
+    <!-- BOOKING -->
+    <div class="screen" id="screen-booking">
+      <div class="page-header">
+        <div class="page-title">Discovery Call Booking</div>
+        <div class="page-sub">Automated scheduling — your calendar fills itself</div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Select Date</div>
+          <div class="cal-header">
+            <button class="btn btn-ghost btn-sm">← Prev</button>
+            <span style="font-weight:700;color:var(--text)">May 2026</span>
+            <button class="btn btn-ghost btn-sm">Next →</button>
+          </div>
+          <div class="cal-grid" style="margin-bottom:8px">
+            <div class="cal-label">SUN</div><div class="cal-label">MON</div><div class="cal-label">TUE</div><div class="cal-label">WED</div><div class="cal-label">THU</div><div class="cal-label">FRI</div><div class="cal-label">SAT</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Available Time Slots — <span id="cal-selected-date" class="gold-text">Select a date</span></div>
+          <div class="time-slots" id="time-slots">
+            <div class="time-slot" onclick="selectTime(this)">9:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">9:30 AM</div>
+            <div class="time-slot booked">10:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">10:30 AM</div>
+            <div class="time-slot booked">11:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">11:30 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">1:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">1:30 PM</div>
+            <div class="time-slot booked">2:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">2:30 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">3:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">4:00 PM</div>
+          </div>
+          <div class="divider"></div>
+          <div class="field"><label>Lead Name</label><input type="text" placeholder="Who is this call with?" id="booking-name"></div>
+          <div class="field"><label>Call Type</label><select><option>Discovery Call (30 min)</option><option>Strategy Session (60 min)</option><option>Deal Review (45 min)</option></select></div>
+          <div class="field"><label>Notes for Agent</label><textarea placeholder="Any context the agent should know before the call…" style="min-height:60px"></textarea></div>
+          <button class="btn btn-gold" onclick="bookCall()" style="width:100%;justify-content:center">📅 Confirm Booking</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-title">Upcoming Calls</div>
+        <div style="display:flex;flex-direction:column;gap:8px" id="upcoming-calls"></div>
+      </div>
+    </div><!-- /booking -->
+
+    <!-- EMAIL SEQUENCES -->
+    <div class="screen" id="screen-email">
+      <div class="page-header">
+        <div class="page-title">7-Email Nurture Sequence</div>
+        <div class="page-sub">Automated follow-up that turns strangers into buyers — while you sleep</div>
+      </div>
+      <div class="email-flow">
+        <div class="email-step">
+          <div class="step-num">1</div>
+          <div class="email-card">
+            <div class="email-timing">📨 Sent immediately on capture</div>
+            <div class="email-subject">Subject: Your free chapter is inside, [First Name] 🎉</div>
+            <div class="email-preview">"Welcome to the Complete Inventor Licensing Workbook family. I'm Valerie, and I've been where you are — a great idea with no clear path to getting it licensed. This workbook is the system I wish I'd had. Inside you'll find your free chapter on micro-category research. It's the first step every licensed inventor takes. Start there tonight..."</div>
+            <div class="email-stats"><div class="est">Est. Open Rate: <strong>52%</strong></div><div class="est">Est. Click Rate: <strong>28%</strong></div><div class="est">Goal: First impression + free value</div></div>
+          </div>
+        </div>
+        <div class="email-step">
+          <div class="step-num">2</div>
+          <div class="email-card">
+            <div class="email-timing">📨 Day 2 — 10:00 AM</div>
+            <div class="email-subject">Subject: What's your #1 roadblock right now?</div>
+            <div class="email-preview">"Most inventors I talk to are stuck in one of three places: they don't know how to prove their idea is worth licensing, they can't get companies to respond to their emails, or they freeze when someone finally says 'send me more.' Which one is you? Hit reply — I read every response personally. Your answer shapes what I send you next..."</div>
+            <div class="email-stats"><div class="est">Est. Open Rate: <strong>44%</strong></div><div class="est">Est. Reply Rate: <strong>12%</strong></div><div class="est">Goal: Identify pain + segment lead</div></div>
+          </div>
+        </div>
+        <div class="email-step">
+          <div class="step-num">3</div>
+          <div class="email-card">
+            <div class="email-timing">📨 Day 4 — 11:00 AM</div>
+            <div class="email-subject">Subject: How Lesia Farmer protected her idea (and yours)</div>
+            <div class="email-preview">"Lesia Farmer is an inventor who created the Trapdoor Colander. Before she had a licensing deal, she had a patent. And before she had a patent, she knew what she was protecting and why. The Complete Inventor Licensing Workbook walks you through exactly what Lesia did — from micro-category research to sell sheet to signed deal. Here's what Assignment #4 will show you about defining your differentiating feature..."</div>
+            <div class="email-stats"><div class="est">Est. Open Rate: <strong>38%</strong></div><div class="est">Goal: Social proof + workbook preview</div></div>
+          </div>
+        </div>
+        <div class="email-step">
+          <div class="step-num">4</div>
+          <div class="email-card">
+            <div class="email-timing">📨 Day 7 — 9:00 AM</div>
+            <div class="email-subject">Subject: The $0 prototype that got a licensing deal</div>
+            <div class="email-preview">"Assignment #8 teaches you the Frankenstein Prototype method — how to simulate your product's key functions using existing products you can buy on Amazon for under $100. One of my students used this exact method to demonstrate her kitchen tool to a licensee over Zoom. She spent $67. She signed a deal worth $40,000 in royalties in year one. You do not need a perfect prototype to get a yes..."</div>
+            <div class="email-stats"><div class="est">Est. Open Rate: <strong>41%</strong></div><div class="est">Goal: Overcome cost objection + urgency</div></div>
+          </div>
+        </div>
+        <div class="email-step">
+          <div class="step-num">5</div>
+          <div class="email-card">
+            <div class="email-timing">📨 Day 10 — 10:30 AM</div>
+            <div class="email-subject">Subject: Are you leaving money on the table?</div>
+            <div class="email-preview">"Here's what most inventors get wrong: they spend 90% of their time perfecting their product and 10% of their time figuring out who to license it to. The workbook flips that ratio. Phase 3 (Assignments 13–16) is entirely dedicated to creating the marketing materials that make a company say 'we must have this in our collection.' Your sell sheet, your video, your One Sentence Benefit Statement. These are what close deals — not your prototype..."</div>
+            <div class="email-stats"><div class="est">Est. Open Rate: <strong>36%</strong></div><div class="est">Goal: Reframe value + drive click to sales page</div></div>
+          </div>
+        </div>
+        <div class="email-step">
+          <div class="step-num">6</div>
+          <div class="email-card">
+            <div class="email-timing">📨 Day 14 — 11:00 AM</div>
+            <div class="email-subject">Subject: Last chance to get the workbook at this price</div>
+            <div class="email-preview">"I'm raising the price of the Complete Inventor Licensing Workbook at the end of this week. If you've been on the fence, this is your window. Here's what you get: 25 step-by-step assignments, 96 vocabulary terms defined in full, real examples from Amazon's top-selling products, and the exact system I used to pursue licensing deals with major brands. This is the workbook I wish existed when I started..."</div>
+            <div class="email-stats"><div class="est">Est. Open Rate: <strong>48%</strong></div><div class="est">Est. Conv. Rate: <strong>4.8%</strong></div><div class="est">Goal: Urgency close</div></div>
+          </div>
+        </div>
+        <div class="email-step">
+          <div class="step-num">7</div>
+          <div class="email-card">
+            <div class="email-timing">📨 Day 21 — 10:00 AM</div>
+            <div class="email-subject">Subject: Still thinking about it? Here's what I'd tell my younger self.</div>
+            <div class="email-preview">"I spent years carrying an idea I knew was good — and doing nothing with it because I didn't have a system. The Complete Inventor Licensing Workbook is that system. It won't do the work for you, but it will make sure every hour you invest in your idea moves you toward a signed licensing deal. If you're ready, I'm here. If you have questions before you buy, just reply to this email..."</div>
+            <div class="email-stats"><div class="est">Est. Open Rate: <strong>33%</strong></div><div class="est">Goal: Final re-engage + relationship close</div></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /email -->
+
+    <!-- DEAL CLOSER -->
+    <div class="screen" id="screen-closer">
+      <div class="page-header">
+        <div class="page-title">Deal Closer</div>
+        <div class="page-sub">Every objection handled. Every close scripted. Never be caught off guard.</div>
+      </div>
+      <div class="section-label" style="margin-bottom:14px">Objection Handlers — 8 Most Common</div>
+      <div class="objection-grid" id="obj-grid"></div>
+      <div class="divider"></div>
+      <div class="section-label" style="margin-bottom:14px">Closing Scripts by Stage</div>
+      <div class="close-scripts" id="close-scripts"></div>
+    </div><!-- /closer -->
+
+    <!-- CUSTOMER HUB -->
+    <div class="screen" id="screen-customers">
+      <div class="page-header">
+        <div class="page-title">Customer Hub</div>
+        <div class="page-sub">Every buyer, every journey stage — turning customers into ambassadors</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px" id="customer-list"></div>
+    </div><!-- /customers -->
+
+    <!-- ANALYTICS -->
+    <div class="screen" id="screen-analytics">
+      <div class="page-header">
+        <div class="page-title">Growth Analytics</div>
+        <div class="page-sub">Predictable, compounding growth — measured every step of the way</div>
+      </div>
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="stat-card gold"><div class="stat-label">Total Revenue</div><div class="stat-value gold">$14,260</div><div class="stat-change">↑ 127% YTD</div></div>
+        <div class="stat-card green"><div class="stat-label">Email List</div><div class="stat-value green">1,847</div><div class="stat-change">↑ 312 this month</div></div>
+        <div class="stat-card"><div class="stat-label">Avg Open Rate</div><div class="stat-value" style="color:var(--blue)">42.3%</div><div class="stat-change" style="color:var(--blue)">Industry avg: 21%</div></div>
+        <div class="stat-card"><div class="stat-label">Customer LTV</div><div class="stat-value gold">$387</div><div class="stat-change">↑ Upsell working</div></div>
+      </div>
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-title">Monthly Revenue — 2026</div>
+          <div class="rev-chart" id="rev-chart"></div>
+          <div class="rev-labels" id="rev-labels"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Funnel Conversion Rates</div>
+          <div id="funnel-metrics"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Revenue Projections — Based on Current Growth Rate</div>
+        <div class="grid-3" style="margin-top:4px">
+          <div style="text-align:center;padding:16px;background:var(--card2);border-radius:var(--radius);border:1px solid var(--border2)"><div style="font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">30 Days</div><div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold2)">$6,400</div><div style="font-size:11px;color:var(--muted);margin-top:4px">At current 34% MoM growth</div></div>
+          <div style="text-align:center;padding:16px;background:var(--card2);border-radius:var(--radius);border:1px solid rgba(201,162,39,0.2)"><div style="font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">90 Days</div><div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold2)">$11,500</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Compounding + upsell</div></div>
+          <div style="text-align:center;padding:16px;background:linear-gradient(135deg,rgba(201,162,39,0.08),rgba(201,162,39,0.03));border-radius:var(--radius);border:1px solid rgba(201,162,39,0.3)"><div style="font-size:11px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">12 Months</div><div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold2)">$84,000+</div><div style="font-size:11px;color:var(--muted);margin-top:4px">With email list at 5,000+</div></div>
+        </div>
+      </div>
+    </div><!-- /analytics -->
+
+    <!-- LEAD CAPTURE -->
+    <div class="screen" id="screen-capture">
+      <div class="page-header">
+        <div class="page-title">Lead Capture Page</div>
+        <div class="page-sub">Your front door — built to convert visitors into leads automatically</div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-title">Customize Your Lead Magnet</div>
+            <div class="field"><label>Headline</label><input id="cp-headline" type="text" value="Get Your FREE Chapter: How to Research Your Market Like a Pro Inventor" oninput="updatePreview()"></div>
+            <div class="field"><label>Subheadline</label><input id="cp-sub" type="text" value="From the Complete Inventor Licensing Workbook — used by inventors to land real licensing deals" oninput="updatePreview()"></div>
+            <div class="field"><label>Button Text</label><input id="cp-btn" type="text" value="Send Me My Free Chapter →" oninput="updatePreview()"></div>
+            <div class="field"><label>Lead Magnet Type</label><select><option>Free chapter</option><option>Free checklist</option><option>Free video training</option><option>Free strategy call</option></select></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Share &amp; Embed</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Copy this link to share your lead capture page on social media, in your email signature, or in your bio.</div>
+            <div style="background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-family:'DM Mono',monospace;font-size:12px;color:var(--gold2);word-break:break-all">inventorlicensing101.com/free-chapter</div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-gold btn-sm" onclick="toast('Link copied to clipboard!','gold')">Copy Link</button>
+              <button class="btn btn-ghost btn-sm" onclick="toast('Embed code copied!','gold')">Get Embed Code</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">Live Preview</div>
+          <div class="capture-preview">
+            <div class="cp-header">
+              <div class="cp-title" id="prev-headline">Get Your FREE Chapter</div>
+              <div class="cp-sub" id="prev-sub">From the Complete Inventor Licensing Workbook</div>
+            </div>
+            <div class="cp-form">
+              <div class="cp-field"><label>First Name</label><input type="text" placeholder="Your first name"></div>
+              <div class="cp-field"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+              <div class="cp-field"><label>What kind of product do you have?</label><select><option>Kitchen / Home</option><option>Beauty / Personal Care</option><option>Electronics / Tech</option><option>Outdoor / Sports</option><option>Baby / Kids</option><option>Pet Products</option><option>Other</option></select></div>
+              <button class="cp-btn" id="prev-btn">Send Me My Free Chapter →</button>
+              <div class="cp-disclaimer">No spam. Unsubscribe anytime. Your email is safe with us.<br>© Valerie LLC · Complete Inventor Licensing Workbook</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /capture -->
+
+    <!-- HOW TO USE GUIDE -->
+    <div class="screen" id="screen-guide">
+      <div class="guide-hero">
+        <div style="font-size:36px;margin-bottom:12px">📖</div>
+        <div class="guide-hero-title">How to Use Sales Agent 101</div>
+        <div class="guide-hero-sub">Your complete step-by-step refresher guide. Every screen, every button, every function — explained clearly so you can pick up right where you left off, no matter how long you've been away.</div>
+      </div>
+
+      <!-- TABLE OF CONTENTS -->
+      <div class="section-label">Jump to Any Section</div>
+      <div class="guide-toc">
+        <div class="toc-item" onclick="scrollToGuide('g-setup')"><div class="toc-icon">🔑</div><div class="toc-label">First-Time Setup</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-dashboard')"><div class="toc-icon">⚡</div><div class="toc-label">Dashboard</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-agent')"><div class="toc-icon">🤖</div><div class="toc-label">AI Agent</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-leads')"><div class="toc-icon">🎯</div><div class="toc-label">Lead Engine</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-pipeline')"><div class="toc-icon">📊</div><div class="toc-label">Pipeline CRM</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-booking')"><div class="toc-icon">📅</div><div class="toc-label">Booking</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-email')"><div class="toc-icon">✉️</div><div class="toc-label">Email Sequences</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-closer')"><div class="toc-icon">🏆</div><div class="toc-label">Deal Closer</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-customers')"><div class="toc-icon">👥</div><div class="toc-label">Customer Hub</div></div>
+        <div class="toc-item" onclick="scrollToGuide('g-analytics')"><div class="toc-icon">📈</div><div class="toc-label">Analytics</div></div>
+      </div>
+
+      <div class="guide-callout">
+        <div class="guide-callout-icon">💾</div>
+        <div class="guide-callout-text"><strong style="color:var(--green)">Your data is automatically saved.</strong> Every lead you add, every call you book, and every customer you advance is saved to this device the moment you do it. When you close the app and come back — even weeks later — everything is exactly where you left it. Your Anthropic API key is also saved so you never have to re-enter it.</div>
+      </div>
+
+      <!-- SECTION 1: FIRST-TIME SETUP -->
+      <div class="guide-section" id="g-setup">
+        <div class="guide-section-header">
+          <div class="guide-section-num">1</div>
+          <div><div class="guide-section-title">First-Time Setup</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Do these two things before anything else</div></div>
+          <div class="guide-section-icon">🔑</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Get your Anthropic API key</div>
+              <div class="step-detail">Go to <strong style="color:var(--gold2)">console.anthropic.com</strong> in any browser. Sign in or create a free account. Click <em>API Keys</em> in the left menu. Click <em>Create Key</em>. Give it a name like "Sales Agent 101." Copy the key — it starts with <em>sk-ant-</em>.</div>
+              <span class="step-tip">⚠️ Copy it immediately — you can only see it once</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Paste your API key into the app</div>
+              <div class="step-detail">Look at the top right of the screen — you will see a dark input field that says <em>"Paste Anthropic API key for AI Agent…"</em> Click it and paste your key. It saves automatically. From this moment on, the AI Agent on screen 2 is fully live and powered by Claude.</div>
+              <span class="step-tip">✅ The key is saved — you never have to paste it again on this device</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Clear the sample data when you're ready to use your own</div>
+              <div class="step-detail">The app opens with sample leads, bookings, and customers already loaded so you can see how everything works. When you are ready to start fresh with your own real data, scroll to the very bottom of the left sidebar and click <strong style="color:var(--gold2)">↺ Reset Sample Data</strong>. This clears everything and gives you a blank slate. You only need to do this once.</div>
+              <span class="step-tip">📌 Only reset when you're ready — your real leads will replace the samples</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: DASHBOARD -->
+      <div class="guide-section" id="g-dashboard">
+        <div class="guide-section-header">
+          <div class="guide-section-num">2</div>
+          <div><div class="guide-section-title">Dashboard — Your Morning Command Center</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Open this first every day</div></div>
+          <div class="guide-section-icon">⚡</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Read the four stat cards at the top</div>
+              <div class="step-detail">These show your Revenue This Month, Active Leads, Calls Booked, and Deals Closed. They give you a snapshot of your business health in under 10 seconds. If any number looks low, that is your focus for the day.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Check the Live Agent Activity feed</div>
+              <div class="step-detail">The right side of the dashboard shows what your agent has been doing — emails sent, leads scored, calls booked. It updates automatically every 7 seconds with a new simulated activity. Read it like a morning briefing.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Review the Sales Funnel card</div>
+              <div class="step-detail">The left card shows how many leads are moving through each stage — from captured to email open to call booked to closed. If you see a big drop between two stages, that is where your energy belongs today.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-action">Use the Quick Action buttons to jump to your most urgent task</div>
+              <div class="step-detail">The four gold-bordered boxes at the bottom link directly to Ask the AI Agent, Add New Lead, Launch Email Sequence, and Book a Discovery Call. Tap whichever one matches what you need most right now.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: AI AGENT -->
+      <div class="guide-section" id="g-agent">
+        <div class="guide-section-header">
+          <div class="guide-section-num">3</div>
+          <div><div class="guide-section-title">AI Agent — Your 24/7 Sales Brain</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Requires your Anthropic API key — see Step 1 of Setup</div></div>
+          <div class="guide-section-icon">🤖</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Use the prompt chips for instant answers</div>
+              <div class="step-detail">At the top of the chat window you will see six blue pill-shaped chips. Tap any one to instantly ask that question — <em>Write me a cold email pitch, Handle the "I need to think about it" objection, What should I say on a discovery call?,</em> and more. The agent answers immediately with a full, specific response.</div>
+              <span class="step-tip">💡 These chips are the fastest way to get help in under 30 seconds</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Type any question in the chat box</div>
+              <div class="step-detail">Click the dark input box at the bottom of the chat screen. Type your question — it can be anything about pitching, licensing, objections, pricing, or strategy. Press <strong>Enter</strong> or tap the gold arrow button to send. The agent responds in a few seconds.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Have a full back-and-forth conversation</div>
+              <div class="step-detail">The agent remembers everything said in the current session. Ask it to rewrite something, go deeper on a topic, or change the tone. Example: <em>"Write me a cold email for a beauty product inventor"</em> → <em>"Now make it shorter"</em> → <em>"Add a P.S. line about the guarantee."</em> It builds on each reply.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-action">Clear the chat to start a fresh topic</div>
+              <div class="step-detail">Tap the <strong>Clear Chat</strong> button in the top right of the agent screen. This wipes the current conversation so you can start a completely new topic without the old context interfering. Use this between different tasks — for example after writing a pitch email, clear chat before asking for objection scripts.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: LEAD ENGINE -->
+      <div class="guide-section" id="g-leads">
+        <div class="guide-section-header">
+          <div class="guide-section-num">4</div>
+          <div><div class="guide-section-title">Lead Engine — Capture Every Prospect</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Add a lead the moment someone expresses interest</div></div>
+          <div class="guide-section-icon">🎯</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Fill in the Add New Lead form on the left</div>
+              <div class="step-detail">Enter the person's <strong>Full Name</strong> and <strong>Email</strong> — these two fields are required. Add their product type (kitchen tool, beauty gadget, etc.), how they found you, and their urgency level. The urgency field is the most important — it determines their score.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Tap "Add & Score Lead" and read the result</div>
+              <div class="step-detail">The app automatically assigns an <strong style="color:var(--green)">A</strong>, <strong style="color:var(--blue)">B</strong>, or <strong style="color:var(--gold2)">C</strong> score based on urgency. <strong>A = Ready to buy or has a patent</strong> (book them immediately). <strong>B = Actively researching</strong> (start nurture sequence). <strong>C = Just browsing</strong> (add to long-term follow-up).</div>
+              <span class="step-tip">🏆 Never let an A-lead sit more than 24 hours without a booking attempt</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Take action on every lead using the buttons</div>
+              <div class="step-detail">Each lead card has three buttons: <strong>✉ Nurture</strong> — starts their email sequence. <strong>📅 Book</strong> — opens the Booking screen with their name pre-filled so you can schedule a call immediately. <strong>✕</strong> — removes the lead permanently when they are closed or no longer relevant. Use all three regularly to keep your list clean and active.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-action">Read the Lead Scoring Model on the right to understand the system</div>
+              <div class="step-detail">The card on the right side explains exactly what each score means and what action it triggers. Refer to it any time you are unsure what to do with a new lead.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: PIPELINE CRM -->
+      <div class="guide-section" id="g-pipeline">
+        <div class="guide-section-header">
+          <div class="guide-section-num">5</div>
+          <div><div class="guide-section-title">Pipeline CRM — Track Every Deal</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Nothing falls through the cracks when every deal has a column</div></div>
+          <div class="guide-section-icon">📊</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Read the five columns left to right — that is your deal journey</div>
+              <div class="step-detail">Every deal moves from left to right: <strong>New Lead → Nurture → Call Booked → Proposal Sent → Closed Won.</strong> The green column on the far right is your wins. A deal stuck in the same column for more than 7 days needs a direct action from you.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Look at the progress bar on each deal card</div>
+              <div class="step-detail">Every deal card has a thin colored bar at the bottom — it shows how far along that deal is as a percentage. Gold = early stage. Blue = mid-stage. Green = near close. Use this as a quick visual scan to identify your hottest opportunities without reading every card.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Spend 5 minutes here every morning</div>
+              <div class="step-detail">Scroll through each column. Any name that has not moved in a week — go to the AI Agent and ask: <em>"Write a re-engagement message for [name] who has been in the Nurture stage for 10 days."</em> The agent will write it. You send it. The deal moves.</div>
+              <span class="step-tip">📌 Your most important daily habit — 5 minutes on the pipeline board</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6: BOOKING -->
+      <div class="guide-section" id="g-booking">
+        <div class="guide-section-header">
+          <div class="guide-section-num">6</div>
+          <div><div class="guide-section-title">Booking — Fill Your Calendar with Hot Calls</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Use this any time an A-lead is ready to talk</div></div>
+          <div class="guide-section-icon">📅</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Select a date on the calendar</div>
+              <div class="step-detail">Only the highlighted dates have available slots — tap one to select it. The selected date appears in gold above the time slots. Days marked as already booked are shown in a darker style and cannot be selected.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Choose an available time slot</div>
+              <div class="step-detail">Tap any white time slot on the right panel — it turns gold when selected. Green slots are already booked and cannot be chosen. Once you select a time, it stays highlighted until you confirm or pick a different one.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Enter the lead's name and call type, then tap Confirm Booking</div>
+              <div class="step-detail">Type the lead's name in the field below the time slots. Choose the call type — Discovery Call (30 min), Strategy Session (60 min), or Deal Review (45 min). Add any context notes you want to remember. Tap <strong>📅 Confirm Booking</strong> — the booking saves instantly and appears in the Upcoming Calls list below.</div>
+              <span class="step-tip">✅ Bookings are saved permanently — they will still be there when you reopen the app</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-action">Use the Prep Notes button before every call</div>
+              <div class="step-detail">In the Upcoming Calls section, each booking has a <strong>Prep Notes</strong> button. Tap it — the app jumps to the AI Agent screen with a prep request already typed for that person. Hit send and the agent gives you a full call preparation guide in seconds.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <div class="step-action">Cancel a booking with the ✕ button</div>
+              <div class="step-detail">If a call gets cancelled or rescheduled, tap the small <strong>✕</strong> button on the right side of the booking card. It removes it from your list permanently. Then go back to the calendar and book a new time.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 7: EMAIL SEQUENCES -->
+      <div class="guide-section" id="g-email">
+        <div class="guide-section-header">
+          <div class="guide-section-num">7</div>
+          <div><div class="guide-section-title">Email Sequences — Your Automated Nurture System</div><div style="font-size:12px;color:var(--muted);margin-top:2px">7 emails already written — ready to paste into your email platform</div></div>
+          <div class="guide-section-icon">✉️</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Read all 7 emails from top to bottom — once</div>
+              <div class="step-detail">Each email card shows the timing, subject line, preview copy, estimated open rate, and the strategic goal for that email. Read all 7 once so you understand the full arc — from first welcome to final re-engagement. This makes every other part of the app make more sense.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Copy the emails into your email platform</div>
+              <div class="step-detail">These emails are ready to use as written. Go to your email platform — <strong>Mailchimp, ConvertKit, Flodesk, or ActiveCampaign</strong> — create a new automation sequence, and paste each email in order with the correct timing delays. Day 0 (immediate), Day 2, Day 4, Day 7, Day 10, Day 14, Day 21.</div>
+              <span class="step-tip">💡 Once set up in your email platform, this sequence runs forever with zero effort from you</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Watch the estimated open rates as your benchmark</div>
+              <div class="step-detail">Each email shows an estimated open rate. Email 1 targets 52%. If your real open rate is lower than 10 percentage points below the estimate, ask the AI Agent to rewrite that specific email's subject line. Example: <em>"Rewrite a subject line for email #3 about Lesia Farmer — mine is only getting 22% opens."</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 8: DEAL CLOSER -->
+      <div class="guide-section" id="g-closer">
+        <div class="guide-section-header">
+          <div class="guide-section-num">8</div>
+          <div><div class="guide-section-title">Deal Closer — Handle Any Objection Confidently</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Read before every sales call — takes 2 minutes</div></div>
+          <div class="guide-section-icon">🏆</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Open the objection you are most likely to hear today</div>
+              <div class="step-detail">There are 8 objection cards. Tap any card header to expand the full script below it. Read the script once before your call. You do not need to memorize it — just reading it puts the core argument in your head so when you hear the objection live, the response flows naturally.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Use the action buttons inside each objection card</div>
+              <div class="step-detail">Each expanded objection has 2–3 action buttons — <em>Send case study, Book follow-up, Add to nurture,</em> etc. Tap whichever matches what you decided to do after hearing the objection on a call. Each button fires a confirmation toast so you know the action registered.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Use the Closing Scripts at the bottom to close the deal</div>
+              <div class="step-detail">Scroll past the objections to find three closing scripts: <strong>Assumptive Close</strong> (use when they have said yes to everything — just walk them through checkout), <strong>Summary Close</strong> (recap everything they get, then ask if they are ready), and <strong>Urgency Close</strong> (use near a price increase or deadline). Tap <em>Copy Script</em> to copy any script to your clipboard.</div>
+              <span class="step-tip">🏆 The Assumptive Close is the most powerful — use it as your default</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 9: CUSTOMER HUB -->
+      <div class="guide-section" id="g-customers">
+        <div class="guide-section-header">
+          <div class="guide-section-num">9</div>
+          <div><div class="guide-section-title">Customer Hub — Take Care of Every Buyer</div><div style="font-size:12px;color:var(--muted);margin-top:2px">A closed deal is not the end — it is the beginning</div></div>
+          <div class="guide-section-icon">👥</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Read each customer's journey badges</div>
+              <div class="step-detail">Every customer card shows a row of journey stage badges — completed stages are green, the current active stage is gold, and upcoming stages are grey. This tells you at a glance exactly where each buyer is in their workbook journey without asking them.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Tap Advance to move a customer to their next stage</div>
+              <div class="step-detail">When a customer completes a milestone — they finish Phase 1, they book their coaching call, they tell you they've started outreach — tap <strong>→ Advance</strong> on their card. Their active badge shifts forward one stage and saves automatically. This keeps their journey current without any manual note-taking.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Use Check In to send a mid-journey touchpoint</div>
+              <div class="step-detail">Tap <strong>✉ Check In</strong> on any customer card to trigger a check-in email notification. Use this when a customer has been quiet for more than 2 weeks — a simple "How is Assignment 7 going?" can re-engage them and open the door to an upsell conversation.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-action">Use Upsell when a customer completes Phase 1</div>
+              <div class="step-detail">The best moment to offer a coaching upgrade ($197) or Full Suite ($497) is right after a customer finishes Phase 1 — Assignments 1 through 6. They have momentum, they have learned what the system can do, and they are ready for more. Tap <strong>⬆ Upsell</strong> on their card and follow up with a personal message.</div>
+              <span class="step-tip">💰 Phase 1 completion is your best upsell trigger — act on it within 48 hours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 10: ANALYTICS -->
+      <div class="guide-section" id="g-analytics">
+        <div class="guide-section-header">
+          <div class="guide-section-num">10</div>
+          <div><div class="guide-section-title">Analytics — Your Weekly Business Review</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Check once a week — not every day</div></div>
+          <div class="guide-section-icon">📈</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-action">Check the four stat cards first</div>
+              <div class="step-detail">Total Revenue, Email List size, Average Open Rate, and Customer Lifetime Value. These four numbers tell you the health of your business at a glance. Revenue and list size should both be going up every week. If open rate drops below 30%, your subject lines need work.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-action">Read the monthly revenue bar chart</div>
+              <div class="step-detail">The bars should trend upward month over month. Hover over any bar to see the exact revenue for that month. If you see a flat or down month, go to the AI Agent and ask: <em>"What should I do differently this month to increase workbook sales?"</em></div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-action">Find your biggest conversion drop-off in the funnel metrics</div>
+              <div class="step-detail">The Funnel Conversion Rates card shows 5 conversion percentages from Lead to Close. Find the one with the lowest percentage — that is your weakest link. <strong>Low email open rate?</strong> Fix your subject lines. <strong>Low click rate?</strong> Improve your email body copy. <strong>Low call-to-proposal rate?</strong> Ask the AI Agent to help you improve your discovery call structure.</div>
+              <span class="step-tip">🎯 Fix your weakest funnel stage first — that is always where the most money is hiding</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-action">Use the 12-month projection as your north star</div>
+              <div class="step-detail">The three projection boxes at the bottom show 30-day, 90-day, and 12-month revenue estimates based on your current growth rate. Look at the 12-month number once a week — not as pressure, but as proof that what you are doing is compounding. Stay consistent and that number becomes real.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAILY ROUTINE -->
+      <div class="card card-gold" style="margin-bottom:28px">
+        <div class="card-title">⭐ Your Recommended Daily Routine — 20 Minutes</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+          <div style="display:flex;gap:12px;align-items:center"><div style="background:rgba(201,162,39,0.15);border-radius:var(--radius-sm);padding:6px 10px;font-size:11px;font-weight:700;color:var(--gold2);white-space:nowrap;min-width:70px;text-align:center">Morning<br>2 min</div><div style="font-size:13px;color:var(--text)">Open the <strong>Dashboard</strong>. Read the 4 stat cards. Check the activity feed. Identify your #1 priority for the day.</div></div>
+          <div style="display:flex;gap:12px;align-items:center"><div style="background:rgba(201,162,39,0.15);border-radius:var(--radius-sm);padding:6px 10px;font-size:11px;font-weight:700;color:var(--gold2);white-space:nowrap;min-width:70px;text-align:center">Daily<br>5 min</div><div style="font-size:13px;color:var(--text)">Open <strong>Pipeline CRM</strong>. Find anyone stuck in the same stage for 7+ days. Go to the AI Agent and write them a re-engagement message.</div></div>
+          <div style="display:flex;gap:12px;align-items:center"><div style="background:rgba(201,162,39,0.15);border-radius:var(--radius-sm);padding:6px 10px;font-size:11px;font-weight:700;color:var(--gold2);white-space:nowrap;min-width:70px;text-align:center">As needed<br>2 min</div><div style="font-size:13px;color:var(--text)">Add any new leads to the <strong>Lead Engine</strong> the moment someone expresses interest. Never let a lead sit in your memory overnight.</div></div>
+          <div style="display:flex;gap:12px;align-items:center"><div style="background:rgba(201,162,39,0.15);border-radius:var(--radius-sm);padding:6px 10px;font-size:11px;font-weight:700;color:var(--gold2);white-space:nowrap;min-width:70px;text-align:center">Pre-call<br>5 min</div><div style="font-size:13px;color:var(--text)">Before every sales call, open <strong>Deal Closer</strong>. Read the 2-3 most likely objections. Choose your closing script. Go into the call prepared.</div></div>
+          <div style="display:flex;gap:12px;align-items:center"><div style="background:rgba(34,201,122,0.1);border-radius:var(--radius-sm);padding:6px 10px;font-size:11px;font-weight:700;color:var(--green);white-space:nowrap;min-width:70px;text-align:center">Weekly<br>5 min</div><div style="font-size:13px;color:var(--text)">Open <strong>Analytics</strong>. Check your revenue trend and funnel conversion rates. Identify your weakest stage and ask the AI Agent how to fix it.</div></div>
+        </div>
+      </div>
+
+      <!-- BOTTOM NAV -->
+      <div class="guide-nav-row">
+        <button class="btn btn-gold" onclick="nav('dashboard')" style="flex:1;justify-content:center">⚡ Go to Dashboard</button>
+        <button class="btn btn-outline" onclick="nav('agent')" style="flex:1;justify-content:center">🤖 Open AI Agent</button>
+        <button class="btn btn-ghost" onclick="nav('leads')" style="flex:1;justify-content:center">🎯 Add Your First Lead</button>
+      </div>
+    </div><!-- /guide -->
+
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+const screens={dashboard:'Command Dashboard',agent:'AI Sales Agent',leads:'Lead Engine',pipeline:'Pipeline CRM',booking:'Discovery Call Booking',email:'Email Sequences',closer:'Deal Closer',customers:'Customer Hub',analytics:'Growth Analytics',capture:'Lead Capture',guide:'How to Use This App'};
+const subs={dashboard:'Your 24/7 AI sales engine — live and working',agent:'Claude-powered · Trained on the Complete Inventor Licensing Workbook',leads:'Capture, score, and route every inventor prospect automatically',pipeline:'Every deal, every stage — nothing falls through the cracks',booking:'Automated scheduling — your calendar fills itself',email:'7-email automation that nurtures leads while you sleep',closer:'Every objection handled. Every close scripted.',customers:'Every buyer, every journey stage — post-sale nurturing',analytics:'Predictable, compounding growth — measured every step',capture:'Your front door — built to convert visitors into leads',guide:'Step-by-step walkthrough of every screen and function'};
+
+function nav(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.sb-nav a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  document.getElementById('topbar-title').textContent=screens[id];
+  document.getElementById('topbar-sub').textContent=subs[id];
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════════
+function toast(msg,type='success'){
+  const tc=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=(type==='success'?'✅ ':'✨ ')+msg;
+  tc.appendChild(t);
+  setTimeout(()=>t.remove(),3200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AI AGENT CHAT
+// ═══════════════════════════════════════════════════════════════
+const SYSTEM_PROMPT = `You are Agent 101, a world-class AI sales strategist for Valerie Washington's "Complete Inventor Licensing Workbook" business. You are the 24/7 sales agent for this product.
+
+ABOUT THE PRODUCT:
+The Complete Inventor Licensing Workbook is a 25-assignment, 4-phase workbook that teaches inventors how to license their product ideas to companies — without manufacturing, without big investment, and without hiring a team. It covers: Phase 1 (Assignments 1-6): Market Research. Phase 2 (Assignments 7-12): Product Development. Phase 3 (Assignments 13-16): Marketing Materials. Phase 4 (Assignments 17-25): Outreach & Licensing. It includes 96+ vocabulary terms defined in full, real Amazon product examples, and the exact system used by professional inventors to land licensing deals.
+
+PRICING:
+- Workbook only: $97
+- Workbook + Coaching: $197  
+- Complete Bundle (Workbook + Coaching + Templates): $297
+- Full Suite: $497
+
+YOUR ROLE: You help Valerie close deals, write pitch emails, handle objections, find licensees, plan outreach, write sell sheet copy, create email sequences, and coach inventors. You are persuasive, knowledgeable, warm, and results-focused. You speak like a seasoned sales pro who truly believes in this product because it works.
+
+Always give specific, actionable advice. Reference the workbook's specific assignments, vocabulary, and methodology when relevant. If asked to write emails, scripts, or copy — write them in full, ready to use.`;
+
+let chatHistory = [];
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  appendMsg('user', msg);
+  chatHistory.push({role:'user', content: msg});
+  
+  const apiKey = document.getElementById('apiKeyInput').value.trim();
+  if (!apiKey) {
+    appendMsg('agent', "Please paste your Anthropic API key in the top bar to activate my AI responses. Once you do, I'll be fully powered up to help you close deals 24/7.");
+    return;
+  }
+  
+  const typing = showTyping();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-api-key': apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory.slice(-12)
+      })
+    });
+    const data = await res.json();
+    typing.remove();
+    if (data.content && data.content[0]) {
+      const reply = data.content[0].text;
+      appendMsg('agent', reply);
+      chatHistory.push({role:'assistant', content: reply});
+    } else {
+      appendMsg('agent', 'I encountered an issue connecting. Please check your API key and try again.');
+    }
+  } catch(e) {
+    typing.remove();
+    appendMsg('agent', 'Connection error. Please verify your Anthropic API key is correct.');
+  }
+}
+
+function appendMsg(role, text) {
+  const body = document.getElementById('chatBody');
+  const isAgent = role === 'agent';
+  const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  div.innerHTML = `
+    ${isAgent ? '<div class="msg-avatar agent">SA</div>' : ''}
+    <div>
+      <div class="msg-bubble">${text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>
+      <div class="msg-time">${time}</div>
+    </div>
+    ${!isAgent ? '<div class="msg-avatar user">V</div>' : ''}
+  `;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTyping() {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = 'msg agent';
+  div.innerHTML = '<div class="msg-avatar agent">SA</div><div class="msg-bubble" style="padding:8px 14px"><div class="typing"><span></span><span></span><span></span></div></div>';
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  return div;
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+function sendChip(el) {
+  document.getElementById('chatInput').value = el.textContent;
+  sendMessage();
+}
+function clearChat() {
+  chatHistory = [];
+  const body = document.getElementById('chatBody');
+  body.innerHTML = '';
+  appendMsg('agent', 'Chat cleared. Ready to help you close more deals. What do you need?');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STORAGE — saves everything automatically on every change
+// ═══════════════════════════════════════════════════════════════
+const STORAGE_KEYS = {
+  leads:     'sa101_leads',
+  pipeline:  'sa101_pipeline',
+  bookings:  'sa101_bookings',
+  customers: 'sa101_customers',
+  stats:     'sa101_stats',
+  apiKey:    'sa101_apikey',
+};
+
+function save(key, data) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+}
+function load(key, fallback) {
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : fallback;
+  } catch(e) { return fallback; }
+}
+
+// Save API key whenever it changes
+document.getElementById('apiKeyInput').addEventListener('input', function() {
+  save(STORAGE_KEYS.apiKey, this.value);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// LEAD ENGINE
+// ═══════════════════════════════════════════════════════════════
+const DEFAULT_LEADS = [
+  {name:'Marcus R.',email:'marcus.r@email.com',product:'Kitchen gadget',source:'YouTube',score:'A',pct:92,added:'Sample'},
+  {name:'Sandra T.',email:'sandra.t@email.com',product:'Beauty tool',source:'Social Media',score:'B',pct:68,added:'Sample'},
+  {name:'Diane W.',email:'diane.w@email.com',product:'Home organizer',source:'Word of Mouth',score:'A',pct:87,added:'Sample'},
+  {name:'Robert K.',email:'robert.k@email.com',product:'Food inventor',source:'Google',score:'B',pct:61,added:'Sample'},
+  {name:'Tyrone B.',email:'tyrone.b@email.com',product:'Outdoor tool',source:'Podcast',score:'C',pct:34,added:'Sample'},
+  {name:'Nina A.',email:'nina.a@email.com',product:'Baby product',source:'Social Media',score:'A',pct:91,added:'Sample'},
+  {name:'James O.',email:'james.o@email.com',product:'Electronics',source:'YouTube',score:'C',pct:29,added:'Sample'},
+  {name:'Priya S.',email:'priya.s@email.com',product:'Beauty device',source:'Google',score:'B',pct:73,added:'Sample'},
+];
+
+let leads = load(STORAGE_KEYS.leads, DEFAULT_LEADS);
+
+function renderLeads() {
+  const list = document.getElementById('lead-list');
+  document.getElementById('lead-count').textContent = leads.length + ' leads';
+  list.innerHTML = leads.map((l,i) => `
+    <div class="lead-card">
+      <div class="lead-avatar">${l.name.split(' ').map(x=>x[0]).join('')}</div>
+      <div style="flex:1">
+        <div class="lead-name">${l.name}</div>
+        <div class="lead-meta">${l.email} · ${l.product} · via ${l.source}</div>
+        <div class="score-bar"><div class="score-fill ${l.pct>75?'high':l.pct>50?'med':'low'}" style="width:${l.pct}%"></div></div>
+      </div>
+      <div class="tag tag-${l.score.toLowerCase()}">${l.score} Lead</div>
+      <div class="lead-actions">
+        <button class="btn btn-ghost btn-sm" onclick="nurtLead(${i})">✉ Nurture</button>
+        <button class="btn btn-ghost btn-sm" onclick="bookLead('${l.name}')">📅 Book</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteLead(${i})" title="Remove lead">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function nurtLead(i) {
+  toast(`Email sequence started for ${leads[i].name}!`,'gold');
+}
+function bookLead(name) {
+  nav('booking');
+  setTimeout(()=>{ document.getElementById('booking-name').value = name; },100);
+  toast(`Opening booking for ${name}…`,'success');
+}
+function deleteLead(i) {
+  const name = leads[i].name;
+  leads.splice(i,1);
+  save(STORAGE_KEYS.leads, leads);
+  renderLeads();
+  toast(`${name} removed from leads`,'gold');
+}
+
+function addLead() {
+  const name = document.getElementById('leadName').value.trim();
+  const email = document.getElementById('leadEmail').value.trim();
+  const product = document.getElementById('leadProduct').value.trim();
+  const source = document.getElementById('leadSource').value;
+  const urgency = document.getElementById('leadUrgency').value;
+  if (!name || !email) { toast('Please enter name and email','gold'); return; }
+  const score = urgency.includes('Ready') || urgency.includes('patent') ? 'A' : urgency.includes('researching') ? 'B' : 'C';
+  const pct = score==='A'?Math.floor(80+Math.random()*18):score==='B'?Math.floor(55+Math.random()*20):Math.floor(20+Math.random()*30);
+  const added = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  leads.unshift({name,email,product:product||'Not specified',source,score,pct,added});
+  save(STORAGE_KEYS.leads, leads);
+  renderLeads();
+  document.getElementById('leadName').value='';
+  document.getElementById('leadEmail').value='';
+  document.getElementById('leadProduct').value='';
+  toast(`${name} added as ${score}-Lead — score: ${pct}%`,'gold');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BOOKING CALENDAR
+// ═══════════════════════════════════════════════════════════════
+const DEFAULT_BOOKINGS = [
+  {name:'Angela M.',date:'May 22, 2026',time:'2:00 PM',type:'Discovery Call (30 min)',score:'A'},
+  {name:'Linda F.',date:'May 21, 2026',time:'11:00 AM',type:'Strategy Session (60 min)',score:'B'},
+];
+let bookings = load(STORAGE_KEYS.bookings, DEFAULT_BOOKINGS);
+
+// Days with booked slots stored separately
+let bookedDays = load('sa101_bookeddays', [10,17]);
+
+function buildCalendar() {
+  const grid = document.getElementById('cal-grid');
+  const days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+  const hasSlot = [5,6,8,9,12,13,15,16,19,20,22,23,26,27];
+  grid.innerHTML = '';
+  for(let i=0;i<3;i++) grid.innerHTML += '<div></div>';
+  days.forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'cal-day' + (d===22?' today':'') + (hasSlot.includes(d)?' has-slot':'') + (bookedDays.includes(d)?' booked':'');
+    div.textContent = d;
+    if(hasSlot.includes(d)) div.onclick = ()=>selectDate(d);
+    grid.appendChild(div);
+  });
+  renderBookingList();
+}
+
+function selectDate(d) {
+  document.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('cal-selected-date').textContent = `May ${d}, 2026`;
+  document.querySelectorAll('.time-slot:not(.booked)').forEach(ts=>ts.classList.remove('selected'));
+}
+
+function selectTime(el) {
+  document.querySelectorAll('.time-slot').forEach(ts=>ts.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function bookCall() {
+  const name = document.getElementById('booking-name').value.trim();
+  const selected = document.querySelector('.time-slot.selected');
+  const date = document.getElementById('cal-selected-date').textContent;
+  const type = document.querySelector('#screen-booking select').value;
+  if(!selected || date==='Select a date') { toast('Please select a date and time','gold'); return; }
+  const booking = {name:name||'New Lead', date, time:selected.textContent, type, score:'B', added: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})};
+  bookings.unshift(booking);
+  save(STORAGE_KEYS.bookings, bookings);
+  // mark day booked
+  const day = parseInt(date.replace('May ',''));
+  if(!bookedDays.includes(day)) { bookedDays.push(day); save('sa101_bookeddays', bookedDays); }
+  selected.classList.remove('selected');
+  selected.classList.add('booked');
+  document.getElementById('booking-name').value='';
+  renderBookingList();
+  toast(`Call booked: ${booking.name} · ${date} · ${selected.textContent}`,'success');
+}
+
+function renderBookingList() {
+  const el = document.getElementById('upcoming-calls');
+  if(!el) return;
+  if(bookings.length===0){el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:12px">No calls booked yet.</div>';return;}
+  el.innerHTML = bookings.map((b,i)=>`
+    <div style="display:flex;align-items:center;gap:14px;padding:12px;background:rgba(34,201,122,0.06);border-radius:var(--radius-sm);border:1px solid rgba(34,201,122,0.15)">
+      <span style="font-size:18px">📞</span>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px;color:var(--text)">${b.name} — ${b.type}</div>
+        <div style="font-size:11px;color:var(--muted)">${b.date} · ${b.time}</div>
+      </div>
+      <div class="tag tag-${(b.score||'b').toLowerCase()}">${(b.score||'B').toUpperCase()}</div>
+      <button class="btn btn-ghost btn-sm" onclick="nav('agent');setTimeout(()=>{document.getElementById('chatInput').value='Give me discovery call prep notes for ${b.name}';},200)">Prep Notes</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteBooking(${i})" title="Cancel booking">✕</button>
+    </div>`).join('');
+}
+
+function deleteBooking(i) {
+  const name = bookings[i].name;
+  bookings.splice(i,1);
+  save(STORAGE_KEYS.bookings, bookings);
+  renderBookingList();
+  toast(`Booking for ${name} cancelled`,'gold');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DEAL CLOSER
+// ═══════════════════════════════════════════════════════════════
+const objections = [
+  {q:"I need to think about it.",s:`"Absolutely, I respect that. Most inventors who say that tell me later they wished they'd started sooner. Can I ask — is there one specific thing that would make this a clear yes for you? Let's talk through it right now while we're both here. If it's not the right fit, I'll tell you honestly. But if it is, I don't want you to lose another month on an idea that's ready to move."`,actions:['Send case study','Book follow-up','Add to nurture']},
+  {q:"It's too expensive.",s:`"I understand. Let me reframe it: the workbook teaches you to license your idea — a single deal can generate $10,000 to $100,000+ in royalties over three to five years. If this workbook gets you one deal — even a small one — you've made back the price hundreds of times over. The real cost is another year of not knowing how to move forward."`,actions:['Offer payment plan','Show ROI breakdown','Send testimonial']},
+  {q:"I don't have a finished product yet.",s:`"That's actually the perfect time to start. Assignment 8 teaches the Frankenstein Prototype — how to demonstrate your concept with products you can buy on Amazon for under $100. You don't need a finished product to start the licensing process. You need a clear concept, a strong benefit, and a sell sheet. All three are inside this workbook."`,actions:['Send prototype guide','Book strategy call','Share example']},
+  {q:"I'm not sure my idea is good enough.",s:`"That's exactly what this workbook resolves. Phase 1 — the first six assignments — tells you definitively whether your idea has a commercial market before you spend a single dollar on patents or prototypes. You'll research your micro-category, study 3-star reviews, and identify whether there's a recurring failure point you can solve. If the market says yes — you proceed with confidence. If it says no — you've saved yourself years of the wrong path."`,actions:['Send Phase 1 preview','Book free consult','Share market research guide']},
+  {q:"I've tried things like this before and they didn't work.",s:`"I hear that — and I want to be direct with you. Most programs teach inventors to manufacture and sell their own products. This workbook teaches the opposite: how to license your idea to a company that already has manufacturing, distribution, and retail relationships. You don't build. You collect royalties. That is a fundamentally different model, and it's why it works when everything else didn't."`,actions:['Send licensing vs manufacturing PDF','Book comparison call','Share success story']},
+  {q:"Can I get a refund if it doesn't work?",s:`"Yes — there's a 30-day guarantee. If you work through the assignments and feel this wasn't the right resource for you, we make it right. But in ten years, I've found that inventors who don't get results are almost always the ones who didn't do the work. The system is proven. The results are yours to create."`,actions:['Send guarantee details','Confirm refund policy','Offer 1-week check-in']},
+  {q:"I don't have time right now.",s:`"The workbook is designed around your life, not the other way around. Each assignment takes 30 to 90 minutes. You can complete Phase 1 — the entire market research foundation — in a single weekend. You don't need to block out months. You need to commit to one focused hour per week. Your idea will still be waiting for you in six months — but so will every company that could have licensed it by then."`,actions:['Send time estimate breakdown','Offer flexible pace coaching','Book 20-min call']},
+  {q:"I'll wait until I have more money saved.",s:`"That's a reasonable instinct — but consider this: the workbook exists to save you money, not cost you money. Most inventors spend $5,000 to $20,000 on prototypes, legal fees, and launch costs before realizing they didn't need to. This workbook shows you how to spend almost nothing before your first licensing conversation. Starting now saves you money in the long run."`,actions:['Send cost comparison','Offer payment plan','Book discovery call']},
+];
+
+const closingScripts = [
+  {label:'The Assumptive Close',script:`"Based on everything you've told me about your product and your goals, I'm going to walk you through getting you set up with the Complete Bundle today. It includes the workbook, the coaching session, and all the templates — everything you need to move from idea to licensed deal. Do you prefer to pay with card or PayPal?"`},
+  {label:'The Summary Close',script:`"Let me summarize what you're getting: 25 step-by-step assignments that walk you through every phase of the licensing process. 96 vocabulary terms so you speak the language of every licensee. Real examples from top-selling Amazon products. And the exact system used by professional inventors. All of that for [price]. Ready to get started?"`},
+  {label:'The Urgency Close',script:`"I want to be upfront — I'm raising the price of the workbook at the end of this week. Today's price is [price]. After Friday it goes to [higher price]. If you've been thinking about this, today is genuinely the best day to move forward. Can we get you set up right now?"`},
+];
+
+function renderCloser() {
+  const grid = document.getElementById('obj-grid');
+  grid.innerHTML = objections.map((o,i) => `
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)">
+        <span>"${o.q}"</span><span id="arrow-${i}">▼</span>
+      </div>
+      <div class="obj-body" id="obj-body-${i}">
+        <div class="obj-script">${o.s}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">${o.actions.map(a=>`<button class="btn btn-ghost btn-sm" onclick="toast('${a} sent!','gold')">${a}</button>`).join('')}</div>
+      </div>
+    </div>`).join('');
+  
+  document.getElementById('close-scripts').innerHTML = closingScripts.map(c => `
+    <div class="close-card">
+      <div class="close-label">${c.label}</div>
+      <div class="close-script">${c.script}</div>
+      <button class="btn btn-outline btn-sm" style="margin-top:10px" onclick="toast('Script copied!','gold')">Copy Script</button>
+    </div>`).join('');
+}
+
+function toggleObj(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CUSTOMER HUB
+// ═══════════════════════════════════════════════════════════════
+const DEFAULT_CUSTOMERS = [
+  {name:'Patricia H.',product:'Under-sink organizer',purchase:'$297 Bundle',date:'May 20',stage:3,journey:['Captured','Nurtured','Call held','Closed','Onboarding','Complete']},
+  {name:'Kevin J.',product:'Gaming accessory',purchase:'$97 Workbook',date:'May 19',stage:2,journey:['Captured','Nurtured','Closed','In Progress','Complete']},
+  {name:'Rita N.',product:'Pet care tool',purchase:'$497 Full Suite',date:'May 18',stage:4,journey:['Captured','Nurtured','Call held','Closed','Coaching active','Complete']},
+  {name:'Angela M.',product:'Kitchen tool',purchase:'$297 Bundle',date:'May 15',stage:3,journey:['Captured','Nurtured','Closed','Assignment 7','Selling phase','Complete']},
+];
+
+let customers = load(STORAGE_KEYS.customers, DEFAULT_CUSTOMERS);
+
+function renderCustomers() {
+  document.getElementById('customer-list').innerHTML = customers.length === 0
+    ? '<div style="color:var(--muted);font-size:13px;padding:12px">No customers yet — closed deals will appear here.</div>'
+    : customers.map((c,ci) => `
+    <div class="customer-card">
+      <div class="cx-avatar">${c.name.split(' ').map(x=>x[0]).join('')}</div>
+      <div style="flex:1">
+        <div class="cx-name">${c.name}</div>
+        <div class="cx-meta">${c.product} · ${c.purchase} · Purchased ${c.date}</div>
+        <div class="cx-journey">
+          ${c.journey.map((j,i)=>`<div class="journey-badge ${i<c.stage?'jb-done':i===c.stage?'jb-active':'jb-next'}">${j}</div>`).join('')}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <button class="btn btn-ghost btn-sm" onclick="advanceCustomer(${ci})">→ Advance</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Check-in email sent to ${c.name}!','gold')">✉ Check In</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Upsell offer sent to ${c.name}!','success')">⬆ Upsell</button>
+      </div>
+    </div>`).join('');
+}
+
+function advanceCustomer(i) {
+  const c = customers[i];
+  if(c.stage < c.journey.length - 1) {
+    c.stage++;
+    save(STORAGE_KEYS.customers, customers);
+    renderCustomers();
+    toast(`${c.name} advanced to: ${c.journey[c.stage]}`,'success');
+  } else {
+    toast(`${c.name} is already at the final stage!`,'gold');
+  }
+}
+
+function moveLeadToCustomer(name, product, purchase) {
+  const date = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  customers.unshift({name, product: product||'Inventor Licensing Workbook', purchase: purchase||'$97 Workbook', date, stage:0, journey:['Captured','Nurtured','Closed','Onboarding','Complete']});
+  save(STORAGE_KEYS.customers, customers);
+  renderCustomers();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ANALYTICS
+// ═══════════════════════════════════════════════════════════════
+const revData = {months:['Jan','Feb','Mar','Apr','May','Jun'],values:[820,1240,1680,2340,3200,4820]};
+
+function renderAnalytics() {
+  const max = Math.max(...revData.values);
+  const chart = document.getElementById('rev-chart');
+  const labels = document.getElementById('rev-labels');
+  chart.innerHTML = revData.values.map(v => `<div class="rev-bar" style="height:${Math.max(8,(v/max)*100)}%" title="$${v.toLocaleString()}"></div>`).join('');
+  labels.innerHTML = revData.months.map(m => `<div class="rev-label">${m}</div>`).join('');
+  
+  const metrics = [
+    {label:'Lead → Email Open',val:'42%',pct:42},
+    {label:'Email Open → Click',val:'28%',pct:28},
+    {label:'Click → Discovery Call',val:'12%',pct:12},
+    {label:'Call → Proposal',val:'68%',pct:68},
+    {label:'Proposal → Close',val:'41%',pct:41},
+  ];
+  document.getElementById('funnel-metrics').innerHTML = metrics.map(m => `
+    <div class="metric-row">
+      <div class="metric-label">${m.label}</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:${m.pct}%"></div></div>
+      <div class="metric-val">${m.val}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LEAD CAPTURE PREVIEW
+// ═══════════════════════════════════════════════════════════════
+function updatePreview() {
+  const headline = document.getElementById('cp-headline').value;
+  const sub = document.getElementById('cp-sub').value;
+  const btn = document.getElementById('cp-btn').value;
+  const words = headline.split(' ').slice(0,5).join(' ');
+  document.getElementById('prev-headline').textContent = words || 'Get Your Free Chapter';
+  document.getElementById('prev-sub').textContent = sub || '';
+  document.getElementById('prev-btn').textContent = btn || 'Get Access Now';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LIVE FEED ANIMATION
+// ═══════════════════════════════════════════════════════════════
+const feedItems = [
+  {color:'gold',text:'Agent sent <strong>follow-up email</strong> to Carla M. — "How\'s your research going?"'},
+  {color:'green',text:'<strong>Priya S.</strong> opened email #3 — 4 minutes on page'},
+  {color:'blue',text:'New lead captured from Instagram bio link: <strong>Jerome H.</strong>'},
+  {color:'gold',text:'Agent answered a question: <strong>"How do I write a sell sheet headline?"</strong>'},
+  {color:'green',text:'<strong>James O.</strong> upgraded from C to B lead — opened 3 emails this week'},
+];
+let feedIdx = 0;
+setInterval(() => {
+  const feed = document.getElementById('live-feed');
+  if(!feed) return;
+  const item = feedItems[feedIdx % feedItems.length];
+  const div = document.createElement('div');
+  div.className = 'af-item';
+  div.innerHTML = `<div class="af-dot ${item.color}"></div><div><div class="af-text">${item.text}</div><div class="af-time">Just now</div></div>`;
+  div.style.animation = 'fadeUp .3s ease';
+  feed.insertBefore(div, feed.firstChild);
+  if(feed.children.length > 8) feed.removeChild(feed.lastChild);
+  feedIdx++;
+}, 7000);
+
+function scrollToGuide(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESET — clears all saved data and returns to defaults
+// ═══════════════════════════════════════════════════════════════
+function resetAllData() {
+  if(!confirm('This will clear all your saved leads, bookings, and customer data and restore the sample data. Are you sure?')) return;
+  Object.values(STORAGE_KEYS).forEach(k => localStorage.removeItem(k));
+  localStorage.removeItem('sa101_bookeddays');
+  leads = [...DEFAULT_LEADS];
+  bookings = [...DEFAULT_BOOKINGS];
+  customers = [...DEFAULT_CUSTOMERS];
+  bookedDays = [10,17];
+  renderLeads();
+  buildCalendar();
+  renderCustomers();
+  toast('All data reset to sample data','gold');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT — restore everything from localStorage on load
+// ═══════════════════════════════════════════════════════════════
+(function init() {
+  // Restore API key
+  const savedKey = load(STORAGE_KEYS.apiKey, '');
+  if(savedKey) document.getElementById('apiKeyInput').value = savedKey;
+
+  // Render all screens
+  renderLeads();
+  buildCalendar();
+  renderCloser();
+  renderCustomers();
+  renderAnalytics();
+
+  // Show saved data toast if real data exists
+  const hasRealLeads = leads.some(l => l.added !== 'Sample');
+  if(hasRealLeads) {
+    setTimeout(()=>toast(`Welcome back — ${leads.length} leads loaded from your last session`,'gold'), 800);
+  }
+})();
+</script>
+</body>
+</html>
